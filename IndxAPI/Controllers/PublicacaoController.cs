@@ -43,5 +43,33 @@ namespace IndxAPI.Controllers
             _context.SaveChanges();
             return CreatedAtAction(nameof(RecuperaPublicacaoPorId), new { Id = publicacao.Id }, publicacao);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult AtualizaPublicacao(int id, [FromBody] Publicacao publicacaoNova)
+        {
+            Publicacao publicacao = _context.Publicacoes.FirstOrDefault(p => p.Id == id);
+            if (publicacao == null)
+                return NotFound();
+
+            publicacao.Nome = publicacaoNova.Nome;
+
+            _context.SaveChanges();
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult RemovePublicacao(int id)
+        {
+            Publicacao publicacao = _context.Publicacoes.FirstOrDefault(p => p.Id == id);
+            if (publicacao == null)
+                return NotFound();
+
+            _context.Remove(publicacao);
+
+            _context.SaveChanges();
+
+            return NoContent();
+        }
     }
 }
